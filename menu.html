@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary menu">
+    <a class="navbar-brand menu" href="/"><b>Standard Brazil</b></a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+
+    <div class="collapse navbar-collapse menu" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item dropdown active">
+                <a class="nav-item nav-link dropdown-toggle" href="#" id="bd-attendances" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Atendimentos</a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-attendances">
+                    <a class="dropdown-item" href="atendimentos_listar.php">Listar</a>
+                    <!-- a class="dropdown-item" onclick='openModalWindow("atendimentos_gerenciar_v2.php")'>Adicionar Novo</a -->
+                    <a class="dropdown-item" onclick='openModalWindow("atendimentos_gerenciar_api.php")'>Adicionar Novo Draft</a>
+                    <a class="dropdown-item" onclick='openModalWindow("atendimentos_gerenciar_api.php?new=ref")'>Adicionar Nova Referência</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown active">
+                <a class="nav-item nav-link dropdown-toggle" href="#" id="bd-reports" 
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Relatórios</a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-reports">
+                    <a class="dropdown-item" href="atendimentos_relatorio.php">Completo</a>
+                    <a class="dropdown-item" href="atendimentos_relatorio_anual.php">Anual</a>
+                    <a class="dropdown-item" href="atendimentos_relatorio_mensal.php">Mensal</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown active">
+                <a class="nav-item nav-link dropdown-toggle" href="#" id="bd-products" data-toggle="dropdown" 
+                    aria-haspopup="true" aria-expanded="false">Manutenção de Produtos</a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-products">
+                    <a class="dropdown-item" href="produtos_listar.php">Listar</a>
+                    <a class="dropdown-item" onclick='openModalWindow("produtos_gerenciar_api.php")'>Adicionar Novo</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown active">
+                <a class="nav-item nav-link dropdown-toggle" href="#" id="bd-terminals" data-toggle="dropdown" 
+                    aria-haspopup="true" aria-expanded="false">Manutenção de Terminais</a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-terminals">
+                    <a class="dropdown-item" href="terminais_listar.php">Listar</a>
+                    <a class="dropdown-item" onclick='openModalWindow("terminais_gerenciar_api.php")'>Adicionar Novo</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown active">
+                <a class="nav-item nav-link dropdown-toggle" href="#" id="bd-user" data-toggle="dropdown" 
+                    aria-haspopup="true" aria-expanded="false">Manutenção de Usuários</a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-user">
+                    <a class="dropdown-item" href="alterar_senha.php">Alterar Senha</a>
+                    <a class="dropdown-item" href="cadastro_listar.php">Listar</a>
+                    <a class="dropdown-item" onclick='openModalWindow("cadastro_gerenciar_api.php")'>Adicionar Novo</a>
+                </div>
+            </li>
+
+        </ul>
+        <span class="navbar-text active dropdwon menu">
+			<a class="nav-item nav-link" href="logout.php">Logout</a>
+		</span>
+    </div>
+</nav>

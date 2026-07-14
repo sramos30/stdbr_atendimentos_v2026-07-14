@@ -1,0 +1,26 @@
+{
+    "name": "webpack-atendimentos",
+    "version": "1.0.0",
+    "description": "npm install webpack webpack-cli --save-dev",
+    "scripts": {
+        "build": "webpack && cp -r dist/js/* ../js && cp -r dist/js/* ../../phpMsqlPhpadminDocker/www/atendimentos/js/",
+        "dev": "webpack serve"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "css-loader": "^6.7.3",
+        "postcss": "^8.4.21",
+        "postcss-loader": "^7.0.2",
+        "postcss-preset-env": "^8.0.1",
+        "style-loader": "^3.3.1",
+        "webpack": "^5.89.0",
+        "webpack-cli": "^4.10.0",
+        "webpack-dev-server": "^5.2.2"
+    },
+    "dependencies": {
+        "libsodium-wrappers": "^0.7.13",
+        "numeral": "^2.0.6"
+    }
+}

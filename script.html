@@ -1,0 +1,202 @@
+
+<script type="text/javascript" src="lib/jquery-min.js"></script>
+<script type="text/javascript" src="lib/jquery-ui.min.js"></script>
+<script type="text/javascript" src="lib/bootstrap.min.js"></script>
+
+<script>
+    //document.onreadystatechange = function(){
+    //    if (document.readyState === "complete") {
+//    }
+//}
+
+    var modalWindow = document.getElementById("modal-window");
+    var spanClose = document.getElementById("modal-close");
+    var iframe = document.getElementById("modal-content");
+    
+    if (modalWindow == null) {
+        modalWindow = document.createElement("DIV");
+        modalWindow.setAttribute("id", "modal-window");
+        modalWindow.setAttribute("class", "modal2");
+
+        modalContent = document.createElement("DIV");
+        modalContent.setAttribute("class", "modal2-content");
+
+        spanClose = document.createElement("SPAN");
+        spanClose.setAttribute("class", "close");
+        spanClose.setAttribute("id", "modal-close");
+        spanClose.innerHTML = "&times;";
+
+        modalContent.appendChild(spanClose);
+
+        spanModalContent = document.createElement("SPAN");
+        spanModalContent.setAttribute("class", "modal2-content");
+
+        iframe = document.createElement("IFRAME");
+        iframe.setAttribute("id", "modal-content");
+        iframe.setAttribute("class", "modal2-content");
+        iframe.setAttribute("src", "");
+        spanModalContent.appendChild(iframe);
+        modalContent.appendChild(spanModalContent);
+        modalWindow.appendChild(modalContent);
+        document.body.appendChild(modalWindow);
+    }
+
+    spanClose.onclick = function () {
+        document.getElementById("modal-window").style.display = "none";
+        location.reload();
+    }
+
+    window.onclick = function (event) {
+        modalWindow = document.getElementById("modal-window");
+        if (event.target == modalWindow) {
+            modalWindow.style.display = "none";
+        }
+    }
+
+    function openModalWindow(filename = "", url = "") {
+        if (filename != "" || url != "") {
+            if (filename != "")
+                iframe.setAttribute("src", filename);
+            else {
+                let xhr = new XMLHttpRequest();
+                let file2load = document.getElementById("filetoload").files[0];
+
+                let formData = new FormData();
+                formData.append("file", file2load);
+
+                xhr.open("POST", url); //Synchronous requests
+                
+                xhr.onload = () => console.log(xhr.response);
+
+                // track upload progress
+                xhr.upload.onprogress = function (event) {
+                    console.log(`Uploaded ${event.loaded} of ${event.total}`);
+                };
+
+                // track completion: both successful or not
+                xhr.onloadend = function () {
+                    if (xhr.status == 200) {
+                        iframe.setAttribute("src", "data:text/html," + escape(xhr.response));
+                        //iframe.setAttribute("src", "data:application/pdf," + escape(xhr.response));
+                        console.log("success");
+                    } else {
+                        console.log("error " + this.status);
+                    }
+                };
+
+                xhr.send(formData);
+            }
+
+            modalWindow.style.display = "block";
+        }
+    }
+
+    function setCookie(name, value, seconds) {
+        if (typeof (seconds) != 'undefined') {
+            var date = new Date();
+            date.setTime(date.getTime() + (seconds * 1000));
+            var expires = "; expires=" + date.toGMTString();
+        } else {
+            var expires = "";
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    function getCookie(name) {
+        name = name + "=";
+        var carray = document.cookie.split(';');
+
+        for (var i = 0; i < carray.length; i++) {
+            var c = carray[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+
+        return null;
+    }
+
+    function deleteCookie(name) {
+        setCookie(name, "", -1);
+    }
+
+    /*
+    function timeoutAction() {
+        var pingTime = document.getElementById("pingTime");
+        var expTime = document.getElementById("expTime");
+
+        if (pingTime == null) {
+            pingTime = document.createElement("");
+            iframe.setAttribute("id", "modal-content");
+            iframe.setAttribute("class", "modal2-content");
+            iframe.setAttribute("src", "");
+            spanModalContent.appendChild(iframe);
+            modalContent.appendChild(spanModalContent);
+            modalWindow.appendChild(modalContent);
+            document.body.appendChild(modalWindow);            
+        }
+
+        alert("timeoutAction iniciou!");
+
+        if (timeout != null) {
+            alert("timeout reset");
+            clearInterval(timeout);
+        }
+
+        timeout = setInterval(function () {
+            if (pingTime > expTime) {
+                alert("expirou!");
+                clearInterval(timeout);
+                window.location.replace("login.php");
+            }
+        }, 1000);
+    };
+    */
+
+</script>
+<!--
+    <script type="text/javascript" src="lib/jquery-min.js"></script>
+    <script type="text/javascript" src="lib/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="lib/materialize.min.js"></script>
+    <script type="text/javascript" src="lib/bootstrap.min.js" </script>
+        
+    <script type="text/javascript">
+        $(document).ready(function()
+        {
+            //$("input:text").addClass("ui-widget ui-state-default ui-corner-all");
+            //$("input:file").addClass("ui-widget ui-state-default ui-corner-all");
+            //$("select").addClass("ui-widget ui-state-default ui-corner-all");	
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function()
+        {
+            $("#produto_id").multiselect(
+            {
+                header: false,
+                noneSelectedText: "Escolha os produtos",
+                selectedList: 5 
+            });
+
+            $("#terminal_id").multiselect(
+            {
+                header: false,
+                noneSelectedText: "Escolha os terminais",
+                selectedList: 9 
+            });
+
+            $("input:text").addClass("ui-widget ui-state-default ui-corner-all");
+            $("input:file").addClass("ui-widget ui-state-default ui-corner-all");
+            $("select").addClass("ui-widget ui-state-default ui-corner-all");	
+            $("#noticia").validate();	
+            //$("#data").mask("99/99/9999");
+            //$("#data2").mask("99/99/9999");
+        });
+    </script>
+-->

@@ -1,0 +1,77 @@
+//webpack.config.js 
+//=================
+
+const path = require('path');
+
+module.exports = {
+    mode: 'development',
+    entry: './src/app.ts',
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+        publicPath: 'dist'
+    },
+    devtool: 'inline-source-map',
+    module: {
+        rules: [{
+            test: /\.ts$/,
+            use: 'ts-loader',
+            exclude: /node_modules/
+        }]
+    },
+    resolve: {
+        extensions: ['.ts', '.js']
+    }
+};
+
+
+//webpack.config.prod.js
+//======================
+
+const path = require('path');
+const CleanPlugin = require('clean-webpack-plugin');
+
+module.exports = {
+    mode: 'production',
+    entry: '../src/',
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'dist')
+    },
+    devtool: 'none',
+    module: {
+        rules: [{
+            test: /\.ts$/,
+            use: 'ts-loader',
+            exclude: /node_modules/
+        }]
+    },
+    resolve: {
+        extensions: ['.ts', '.js']
+    },
+    plugins: [
+        new CleanPlugin.CleanWebpackPlugin()
+    ]
+};
+
+
+//package.json
+//============ 
+{
+    "description": "lite-server: ^2.5.4, ts-loader: ^6.2.1, typescript: ^3.7.2, webpack: ^4.41.2, webpack-cli: ^3.3.10, webpack-dev-server: ^3.9.0, clean-webpack-plugin: ^3.0.0",
+    "scripts": {
+        "start": "webpack-dev-server",
+        "dev": "webpack",
+        "prod": "webpack --config webpack.config.prod.js",
+        "start-server": "lite-server"
+    },
+    "devDependencies": {
+        "clean-webpack-plugin": "^3.0.0",
+        "lite-server": "^2.5.4",
+        "ts-loader": "^6.2.1",
+        "typescript": "^3.7.2",
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.3.10",
+        "webpack-dev-server": "^3.9.0"
+    }
+}

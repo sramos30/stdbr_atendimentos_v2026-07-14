@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Get excel file contents</title>
+</head>
+
+<body onload="onLoadBody()">
+    <div>
+        <div id="MainApp"></div>
+        <div id="console"></div>
+    </div>
+    <script>
+        //var baseUrl = "https://sramos.online"; 
+		
+        var lstPlanos = [];
+        //var objAtendimento = {"atdId": "3883","codAtendimento":"PGUA\/DS\/362\/20","data":"2021-01-04","navio":"KLARA OLDENDORFF","balanca":"63364.199","arqueacao":"63752.176","comando_navio":"63657.383","perito_receita":"63764.593","outras_partes1_id":"Comprador","outras_partes1":"63751.713","outras_partes2_id":"Exportador","outras_partes2":"0.000","outras_partes3_id":"Exportador","outras_partes3":"0.000","excesso":"387.977","falta":"0.000","diferenca":"0.61","produtos":{"1":{"nome":"mz","descricao":"Maize","tags":"milho"}},"terminais":{"3":{"nome":"CT","descricao":"CONTRIGUA\u00c7\u00da","tags":"cotriguacu"},"4":{"nome":"CS","descricao":"CENTRO SUL","tags":""},"6":{"nome":"LD","descricao":"DREYFUS","tags":"luizdreifus"},"7":{"nome":"INT","descricao":"INTERALLI","tags":""},"11":{"nome":"RO","descricao":"ROCHA","tags":""},"12":{"nome":"AGTL","descricao":"AGTL","tags":""}},"poroes":{"1":{"produto_id":"1","fatorestiva":"45.31","cubagem":"441264","condicao":"FULL","terminais":{"4":{"quantidade":"789.310"},"6":{"quantidade":"3949.260"},"7":{"quantidade":"5000.035"}}},"2":{"produto_id":"1","fatorestiva":"45.89","cubagem":"527209","condicao":"FULL","terminais":{"6":{"quantidade":"1416.070"},"7":{"quantidade":"7078.593"},"11":{"quantidade":"428.310"},"12":{"quantidade":"2564.540"}}},"3":{"produto_id":"1","fatorestiva":"45.22","cubagem":"510851","condicao":"FULL","terminais":{"4":{"quantidade":"4623.294"},"6":{"quantidade":"443.620"},"7":{"quantidade":"5005.920"},"11":{"quantidade":"1223.930"}}},"5":{"produto_id":"1","fatorestiva":"44.87","cubagem":"492491","condicao":"FULL","terminais":{"3":{"quantidade":"3269.618"},"6":{"quantidade":"2712.695"},"11":{"quantidade":"4993.365"}}},"6":{"produto_id":"1","fatorestiva":"49.74","cubagem":"490499","condicao":"SLACK","terminais":{"3":{"quantidade":"2674.940"},"6":{"quantidade":"1474.480"},"11":{"quantidade":"5711.550"}}},"7":{"produto_id":"1","fatorestiva":"45.81","cubagem":"504134","condicao":"FULL","terminais":{"3":{"quantidade":"5000.785"},"6":{"quantidade":"6003.875"}}}},"lstPlanos":["pdf","xlsm"]};
+        var objAtendimento = {"codAtendimento":"PGUA/DS/002/21","data":"2021-01-06","navio":"NORD GEMINI","balanca":65943.18400000001,"arqueacao":"65988.389","comando_navio":"65941.400","perito_receita":"65984.844","outras_partes1_id":"P&I Afretador","outras_partes1":"65941.400","outras_partes2_id":"---","outras_partes2":"0.000","outras_partes3_id":"---","outras_partes3":"0.000","excesso":0,"falta":45.204999999987194,"diferenca":0.06855143664277295,"produtos":{"1":{"nome":"mz","descricao":"Maize","tags":"mz,maize,milho"}},"terminais":{"3":{"nome":"CT","descricao":"CONTRIGUAÇÚ","tags":"ct,contriguacu,cotriguacu"},"4":{"nome":"CS","descricao":"CENTRO SUL","tags":"cs,centrosul,"},"5":{"nome":"CG","descricao":"CARGILL","tags":"cg,cargill,"},"7":{"nome":"INT","descricao":"INTERALLI","tags":"int,interalli,"},"12":{"nome":"AGTL","descricao":"AGTL","tags":"agtl,"}},"poroes":{"1":{"produto_id":"1","terminais":{"4":{"quantidade":48.372},"5":{"quantidade":3099.9300000000003},"7":{"quantidade":3938.065},"12":{"quantidade":2537.63}},"cubagem":445944,"fatorestiva":46.336672798214714,"condicao":"FULL"},"2":{"produto_id":"1","terminais":{"3":{"quantidade":546.489},"5":{"quantidade":8000.09}},"cubagem":525417,"fatorestiva":61.47687864348999,"condicao":"SLACK"},"3":{"produto_id":"1","terminais":{"4":{"quantidade":3827.204},"7":{"quantidade":7000.055}},"cubagem":487605,"fatorestiva":45.03494374707394,"condicao":"FULL"},"4":{"produto_id":"1","terminais":{"3":{"quantidade":6333.58},"4":{"quantidade":357.522},"5":{"quantidade":720.705},"12":{"quantidade":2905.135}},"cubagem":470523,"fatorestiva":45.60682806979045,"condicao":"FULL"},"5":{"produto_id":"1","terminais":{"3":{"quantidade":10348.67},"4":{"quantidade":386.206}},"cubagem":486288,"fatorestiva":45.29982460905929,"condicao":"FULL"},"6":{"produto_id":"1","terminais":{"3":{"quantidade":4191.145},"4":{"quantidade":1017.206}},"cubagem":525328,"fatorestiva":100.86263387394588,"condicao":"SLACK"},"7":{"produto_id":"1","terminais":{"3":{"quantidade":10685.18}},"cubagem":493163,"fatorestiva":46.15392534332599,"condicao":"FULL"}},"lstPlanos":["pdf","xlsm"],"atdId":"3879","lstPoroes":["1","2","3","4","5","6","7"],"lstProdutos":["1"],"lstTerminais":["3","4","5","7","12"]};
+
+        function onChangeForm1(evt) {
+            let fldName = evt.target.name.toUpperCase();
+            let fldValue = evt.target.value;
+            let className = evt.target.className.toUpperCase();
+
+            writeToConsole(`fldName:${fldName}, fldValue:${fldValue}, className:${className}`);
+
+            switch( fldName ) {
+                case "ID": {
+                    objAtendimento.atdId = fldValue;
+                    break;
+                }
+                case "DCPFILETODELETE": {
+                    if ( className == "CBDCPFILES" ){
+                        let cbDcpFiles = document.querySelectorAll(".cbDcpFiles");
+
+                        objAtendimento.dcpFileToDelete = [];
+
+                        cbDcpFiles.forEach(i => {
+                            if (i.checked) {
+                                objAtendimento.dcpFileToDelete.push(i.id);
+                            }
+                        });
+                    }
+                    break;
+                }
+            }
+        }
+
+        function onLoadBody() {
+            const mainApp = document.getElementById("MainApp");
+            mainApp.innerText = "";
+
+            //<form id="form1" onsubmit="return onSubmitForm1(event);">
+            const frmForm1 = document.createElement("FORM");
+            frmForm1.id = "form1";
+            frmForm1.onsubmit = function(evt) {
+                return onSubmitForm1(evt);
+            };
+            frmForm1.onchange = function(evt) {
+                return onChangeForm1(evt);
+            };
+
+
+            let divNode = document.createElement("DIV");
+            divNode.innerHTML = `<label for="id">id:</label>`
+            let node = document.createElement("INPUT");
+            node.name = "id";
+            node.type = "text";
+            node.id = "id";
+            node.size = "10";
+            node.maxlength = "10";
+            node.value = objAtendimento.atdId;
+            divNode.appendChild(node);
+
+            frmForm1.appendChild(divNode);
+
+            divNode = document.createElement("DIV");
+            divNode.innerHTML = '<label for="planodecarga">Files to load:</label>';
+            node = document.createElement("INPUT");
+            node.name = "planodecarga";
+            node.type = "file";
+            node.id = "planodecarga";
+            node.size = "30";
+            node.multiple = true;
+            node.accept = ".pdf, .xls, .xlsx, .xlsm";
+
+            //node.onchange = function() { return onChangePlanos(); };
+
+            divNode.appendChild(node);
+            frmForm1.appendChild(divNode);
+
+            divNode = document.createElement("DIV");
+            let selNode = document.createElement("SELECT");
+            selNode.name = "action";
+            selNode.id = "action";
+
+            let arrActions = ["GET", "PUT", "POST", "DELETE"];
+
+            arrActions.forEach(action => {
+                let optNode = document.createElement("OPTION");
+                optNode.value = action;
+                optNode.name = action;
+                optNode.innerText = action;
+
+                selNode.appendChild(optNode);
+            });
+
+            divNode.appendChild(selNode);
+            frmForm1.appendChild(divNode);
+
+            if( Number(objAtendimento.atdId) > 0 ) {
+                // Remove saved dcp files
+                if (objAtendimento.lstPlanos) {
+                    divNode = document.createElement("DIV");
+                    divNode.id = "cbDcpFiles";
+                    divNode.name = "cbDcpFiles";
+                    divNode.innerHTML = `<label for="dcpFileToDelete">Planos salvos:</label>`
+
+                    objAtendimento.lstPlanos.forEach(ext => {
+                        const node = document.createElement('INPUT');
+                        node.type = "checkbox";
+                        node.name = `dcpFileToDelete`;
+                        node.id = ext;
+                        node.value = ext;
+                        node.className = "cbDcpFiles";
+
+                        divNode.appendChild(node);
+                        divNode.append(ext);
+                    });
+
+                    frmForm1.appendChild(divNode);
+                }
+            }
+
+            divNode = document.createElement("DIV");
+            divNode.name = "fileList";
+            divNode.id = "fileList";
+
+            frmForm1.appendChild(divNode);
+
+            //divNode = document.createElement("DIV");
+            //divNode.id = "json";
+            //divNode.innerText = JSON.stringify(objAtendimento);
+            //frmForm1.appendChild(divNode);
+
+            divNode = document.createElement("DIV");
+            // button
+            node = document.createElement("INPUT");
+            node.name = "go";
+            node.type = "button";
+            node.id = "go";
+            node.value = "go";
+
+            node.onclick = function(evt) {
+                onClickPlanos(evt);
+            };
+
+            divNode.appendChild(node);
+            frmForm1.appendChild(divNode);
+
+            mainApp.appendChild(frmForm1);
+        }
+
+        function writeToConsole(text = "") {
+            let divConsole = document.getElementById("console");
+            if (divConsole)
+                divConsole.innerText = text;
+            console.log("writeToConsole:", text);
+        }
+
+        async function sendJson( json ) {
+            let id = (json && json.atdId)?json.atdId:"New";
+            let action = (id=="New")?"POST":"PUT";
+
+            let headers = new Headers();
+            //let formData = new FormData();
+
+            headers.append('Accept', 'application/json');
+            headers.append("Content-type", "application/json");
+
+            //formData.append("json", JSON.stringify(json) );
+
+            return await fetch(`/atendimentos/api/planos.php`, {
+                headers: headers,
+                mode: 'cors', // no-cors, *cors, same-origin
+                body: JSON.stringify(json),
+                method: action, // *GET, POST, PUT, DELETE, etc.
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then( json => {
+                return json;       
+            })
+            .catch(err => {
+                let error = `catch: fetch: ${JSON.stringify(err)}`;
+                writeToConsole(error);
+            })
+        }
+
+        function onClickPlanos(evt) {
+            const id = document.getElementById("id").value;
+            const files = document.getElementById("planodecarga").files;
+            const action = document.getElementById("action").value;
+            let formData = new FormData();
+
+            writeToConsole();
+
+            sendJson( objAtendimento )
+            .then( json => {
+                console.log( "sendJson:", json );
+            })
+
+            //if( Number(id) > 0 ) {
+//
+            //    formData.append("json", JSON.stringify(objAtendimento) );
+//
+            //    let ctdFiles = files.length;
+//
+            //    if( ctdFiles > 0 ) {
+            //        // Read selected files
+            //        for (var index = 0; index < ctdFiles; index++) {
+            //            console.log( "index:", index); //, files[index]);
+            //            formData.append("files[]", files[index] );
+            //        }
+            //    }
+//
+            //    console.log( "formData:", formData.getAll("files[]") );
+            //    console.log( "json:", formData.getAll("json") );
+//
+            //    let headers = new Headers();
+            //    headers.append('Accept', 'application/json');
+            //    headers.append("Content-type", "application/json");
+            //    //headers.append("Content-type", "multipart/form-data" );
+//
+            //    fetch(`${baseUrl}/api/planos.php?id=${id}`, {
+            //        mode: 'cors', // no-cors, *cors, same-origin
+            //        body: formData,
+            //        json: JSON.stringify(objAtendimento),
+            //        method: action, // *GET, POST, PUT, DELETE, etc.
+            //        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            //        credentials: 'same-origin', // include, *same-origin, omit
+            //        redirect: 'follow', // manual, *follow, error
+            //        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            //        headers: headers
+            //    })
+            //    .then(response => {
+            //        console.log( response );
+            //        return response.json();
+            //    })
+            //    .then( json => {
+            //        console.log( json );       
+            //    })
+            //    //.then( json => {
+            //    //    switch( action ) {
+            //    //        case "GET___": {
+            //    //            lstPlanos = [...json];
+            //    //            setFileList();
+            //    //            break;
+            //    //        }
+            //    //        default: {
+            //    //            //writeToConsole(JSON.stringify(json));
+            //    //            console.log( json );
+            //    //            //console.log( json.files.length );
+            //    //            break;          
+            //    //        }
+            //    //
+            //    //    }
+            //    //})
+            //    .catch(err => {
+            //        let error = `catch: fetch: ${JSON.stringify(err)}`;
+            //        console.log( error, err)
+            //        writeToConsole(error);
+            //    })
+            //}
+        }
+
+        function setFileList() {
+            let divNode = document.getElementById("fileList");
+            divNode.innerHTML = `<label>Selected file:</label>`;
+
+            if (lstPlanos) {
+                lstPlanos.forEach(ext => {
+                    const node = document.createElement('INPUT');
+                    node.type = "checkbox";
+                    node.id = ext;
+                    node.value = ext;
+                    node.className = "cbFileList";
+
+                    divNode.appendChild(node);
+                    divNode.append(ext);
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>

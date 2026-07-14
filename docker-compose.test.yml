@@ -1,0 +1,32 @@
+# Ambiente de teste descartável do sistema legado de Atendimentos.
+# Substitui o `docker run` manual usado durante a sessão de desenvolvimento -
+# mesma imagem, mesmo mount, mesma rede, mesma porta.
+#
+# Uso:
+#   docker compose -f docker-compose.test.yml up -d      # sobe
+#   docker compose -f docker-compose.test.yml logs -f     # acompanha log
+#   docker compose -f docker-compose.test.yml down        # derruba
+#   docker compose -f docker-compose.test.yml restart app # reinicia (ex: após editar .dev-env)
+#
+# NÃO gerencia `mysqldb`/`phpmyadmin` de propósito - são infraestrutura
+# compartilhada com projetos irmãos (rede phpmsqlphpadmindocker_SrrpolacoNet),
+# já geridos em outro lugar. Este compose só assume que já estão no ar nessa
+# rede (external: true, abaixo) - "up" aqui nunca cria/recria/derruba o banco.
+
+services:
+  app:
+    image: phpmsqlphpadmindocker-laravel:latest
+    container_name: atendimentos-legado-test
+    working_dir: /var/www/html
+    command: ["php", "-S", "0.0.0.0:8090"]
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8090:8090"
+    networks:
+      - phpmsqlphpadmindocker_SrrpolacoNet
+    restart: "no"
+
+networks:
+  phpmsqlphpadmindocker_SrrpolacoNet:
+    external: true
