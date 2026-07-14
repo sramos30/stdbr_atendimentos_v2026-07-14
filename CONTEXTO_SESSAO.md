@@ -337,6 +337,13 @@ container descartável.
   — **cópia de trabalho local, sem ligação direta com produção (Hostinger)**.
   Mudanças aqui exigem um passo de deploy separado (ainda não definido) pra ir ao ar.
   Confirmado explicitamente pelo dono do sistema.
+- **Git inicializado nesta sessão** (não existia antes) — commit raiz único
+  (`d2cc44b`) cobrindo o estado até a Fase 1, tag `v0.1.0-fase1-auth`. Sem
+  remoto configurado ainda. `.gitignore` cobre `.dev-env`/`_dev-env`/
+  `_dbstdbrz2.ini`/`dbstdbrz2.ini`/`dbstdbrz2.ini.main`/`.login_kx_keys.json`/
+  `logs/` (todos com credenciais reais ou dado operacional de produção,
+  confirmado um a um antes do primeiro commit — vale reconferir essa lista se
+  novos arquivos de config/segredo aparecerem antes de qualquer `git add`).
 - Rede Docker compartilhada: `phpmsqlphpadmindocker_SrrpolacoNet` — contém `mysqldb`
   (MySQL 8, `saUser`/`saP@ssw0rd`, banco `u210527770_dbstdbrz2`), `phpmyadmin`
   (porta 81), e outros containers de projetos irmãos.
